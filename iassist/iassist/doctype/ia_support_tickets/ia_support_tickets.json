@@ -50,7 +50,16 @@
   "custom_approval_reference",
   "custom_cost_incurred",
   "status_wise_activity_table_tab",
-  "custom_status_wise_activity_table"
+  "custom_status_wise_activity_table",
+  "tab_6_tab",
+  "custom_sla_info",
+  "custom_sla_status",
+  "custom_response_by_info",
+  "custom_resolution_by_info",
+  "column_break_nhbl",
+  "custom_sla_creation",
+  "custom_on_hold_since_info",
+  "custom_total_hold_time_info"
  ],
  "fields": [
   {
@@ -310,12 +319,63 @@
    "label": "Status Wise Activity Table",
    "options": "Status Wise Activity Table",
    "read_only": 1
+  },
+  {
+   "fieldname": "tab_6_tab",
+   "fieldtype": "Tab Break",
+   "label": "SLA Info"
+  },
+  {
+   "fieldname": "custom_sla_info",
+   "fieldtype": "HTML Editor",
+   "label": "SLA Info",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_nhbl",
+   "fieldtype": "Column Break",
+   "read_only": 1
+  },
+  {
+   "fieldname": "custom_sla_creation",
+   "fieldtype": "HTML Editor",
+   "label": "SLA Creation"
+  },
+  {
+   "fieldname": "custom_sla_status",
+   "fieldtype": "HTML Editor",
+   "label": "SLA Status",
+   "read_only": 1
+  },
+  {
+   "fieldname": "custom_on_hold_since_info",
+   "fieldtype": "HTML Editor",
+   "label": "On Hold Since Info",
+   "read_only": 1
+  },
+  {
+   "fieldname": "custom_response_by_info",
+   "fieldtype": "HTML Editor",
+   "label": "Response By Info",
+   "read_only": 1
+  },
+  {
+   "fieldname": "custom_resolution_by_info",
+   "fieldtype": "HTML Editor",
+   "label": "Resolution By Info",
+   "read_only": 1
+  },
+  {
+   "fieldname": "custom_total_hold_time_info",
+   "fieldtype": "HTML Editor",
+   "label": "Total Hold Time Info",
+   "read_only": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-10-31 18:49:36.754706",
+ "modified": "2025-11-12 12:20:43.864362",
  "modified_by": "Administrator",
  "module": "IAssist",
  "name": "IA Support Tickets",
