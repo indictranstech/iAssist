@@ -393,14 +393,12 @@
    "read_only": 1
   },
   {
-   "depends_on": "eval: doc.status != 'Replied' && doc.sla;",
    "fieldname": "response_by",
    "fieldtype": "Datetime",
    "label": "Response By",
    "read_only": 1
   },
   {
-   "depends_on": "eval: doc.status != 'Replied' && doc.sla;",
    "fieldname": "resolution_by",
    "fieldtype": "Datetime",
    "label": "Resolution By",
