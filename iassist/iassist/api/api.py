@@ -320,21 +320,24 @@ def sync_to_central_support_to_update(doc):
             message = (response_data.get("message", {}).get("message") if response_data and isinstance(response_data, dict) else response.status_code)
             return str(message)
     except Exception:
-        # frappe.log_error(f"Error during sync to central: {frappe.get_traceback()}")
-        message = (response_data.get("message", {}).get("message") if response_data and isinstance(response_data, dict) else response.status_code)
-        return str(message)
-
+        frappe.log_error(title="Sync to central failed", message=frappe.get_traceback())
+        return {"message": frappe.get_traceback()}
+    
 def get_configurations(doc):
     config = frappe.get_single("IAssist Support Configurations")
     if not config.is_active:
         return
-    if config.is_multiple_users:        
+
+    api_key = None     
+    api_secret = None
+
+    if config.is_multiple_users:
         logged_user = frappe.session.user
         for user_row in config.ics_multi_user_details:
             if logged_user == user_row.username:
                 api_key = user_row.api_key
                 api_secret = user_row.get_password("api_secret")
-            break
+                break   
         if not api_key or not api_secret:
             return None 
     else:
@@ -518,3 +521,4 @@ def get_delete_update_url(doctype):
         return
     url = "/api/method/icentral_support.icentral_support.api.issue.delete_remark_update"
     return url
+
