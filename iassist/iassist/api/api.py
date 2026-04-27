@@ -200,7 +200,7 @@ def sync_to_central_support_to_create(doc):
     try:
         if check_if_sync_id_exists(doc):
             return
-        config = frappe.get_single("IAssist Support Configurations")
+        config = frappe.db.get_single_value("IAssist Support Configurations","central_support_url")
         if get_configurations(doc):
             headers = get_configurations(doc)
         else:
@@ -211,7 +211,7 @@ def sync_to_central_support_to_create(doc):
             frappe.msgprint("Central sync failed : User is not available in configurations")
             # frappe.log_error("Central sync failed : User is not available in configurations")
  
-        base_url = config.central_support_url.rstrip("/")
+        base_url = config.rstrip("/")
         doctype = doc.doctype
         endpoint_path = get_create_url(doctype)
 
@@ -272,7 +272,7 @@ def sync_to_central_support_to_create(doc):
     
 def sync_to_central_support_to_update(doc):
     try:
-        config = frappe.get_single("IAssist Support Configurations")
+        config = frappe.db.get_single_value("IAssist Support Configurations","central_support_url")
         if get_configurations(doc):
             headers = get_configurations(doc)
         else:
@@ -283,7 +283,7 @@ def sync_to_central_support_to_update(doc):
             frappe.msgprint("Central sync failed : User is not available in configurations")
             # frappe.log_error("Central sync failed : User is not available in configurations")
             return{"message:Central sync failed : User is not available in configurations"}
-        base_url = config.central_support_url.rstrip("/")
+        base_url = config.rstrip("/")
         doctype = doc.doctype 
         endpoint_path = get_update_url(doctype)
         if not endpoint_path:
@@ -324,7 +324,7 @@ def sync_to_central_support_to_update(doc):
         return {"message": frappe.get_traceback()}
     
 def get_configurations(doc):
-    config = frappe.get_single("IAssist Support Configurations")
+    config = frappe.get_doc("IAssist Support Configurations")
     if not config.is_active:
         return
 
@@ -375,7 +375,7 @@ def sync_to_update(docname, doctype):
 
 @frappe.whitelist()
 def get_allowed_user(doctype):
-    config = frappe.get_single("IAssist Support Configurations")
+    config = frappe.get_doc("IAssist Support Configurations")
     is_allowed_user = 0
     if config.is_multiple_users:
         for user_row in config.ics_multi_user_details:
