@@ -3,134 +3,138 @@ frappe.ui.form.on("Issue", {
 		// set_intro_not_synced(frm)
 		render_status_box(frm);
 		assigned_to(frm);
+		if (!frm.doc.__islocal) {
+			frappe.call({
+				method: "iassist.iassist.api.api.get_allowed_user",
+				args: { doctype: frm.doc.doctype },
+				callback: function (r) {
+					if (
+						r.message &&
+						r.message == 1 &&
+						!frm.doc.custom_deleted_from_icentral_support &&
+						!frm.doc.custom_requested_to_delete_ticket &&
+						!frm.doc.__islocal
+					) {
+						if (!frm.doc.custom_master_ic_id) {
+							frm.add_custom_button("Raise Ticket", function () {
+								frappe.call({
+									method: "iassist.iassist.api.api.sync_to_create",
+									args: {
+										docname: frm.doc.name,
+										doctype: frm.doc.doctype,
+									},
+									callback: function (res) {
+										if (!res.exc) {
+											let message =
+												typeof res.message === "string"
+													? res.message
+													: JSON.stringify(res.message);
 
-		frappe.call({
-			method: "iassist.iassist.api.api.get_allowed_user",
-			args: { doctype: frm.doc.doctype },
-			callback: function (r) {
-				if (
-					r.message &&
-					r.message == 1 &&
-					!frm.doc.custom_deleted_from_icentral_support &&
-					!frm.doc.custom_requested_to_delete_ticket &&
-					!frm.doc.__islocal
-				) {
-					if (!frm.doc.custom_master_ic_id) {
-						frm.add_custom_button("Raise Ticket", function () {
-							frappe.call({
-								method: "iassist.iassist.api.api.sync_to_create",
-								args: {
-									docname: frm.doc.name,
-									doctype: frm.doc.doctype,
-								},
-								callback: function (res) {
-									if (!res.exc) {
-										let message =
-											typeof res.message === "string"
-												? res.message
-												: JSON.stringify(res.message);
-
-										frappe.msgprint(message);
-										frm.reload_doc();
-									} else {
-										frappe.msgprint(
-											"Failed to raise ticket on Icentral Support",
-										);
-									}
-								},
-							});
-						});
-					} else if (!frm.doc.custom_requested_to_delete_ticket) {
-						frm.add_custom_button("Update Ticket", function () {
-							frappe.call({
-								method: "iassist.iassist.api.api.sync_to_update",
-								args: {
-									docname: frm.doc.name,
-									doctype: frm.doc.doctype,
-								},
-								callback: function (res) {
-									if (!res.exc) {
-										let message =
-											typeof res.message === "string"
-												? res.message
-												: JSON.stringify(res.message);
-
-										frappe.msgprint(message);
-										frm.reload_doc();
-									} else {
-										frappe.msgprint(
-											"Failed to update ticket on Icentral Support",
-										);
-									}
-								},
-							});
-						});
-
-						frm.add_custom_button(
-							"Request For Deletion",
-							function () {
-								let d = new frappe.ui.Dialog({
-									title: "Request for Deletion",
-									fields: [
-										{
-											fieldtype: "Small Text",
-											fieldname: "reason",
-											label: "Reason for Deletion",
-											reqd: 1,
-										},
-									],
-									primary_action_label: "Delete Request",
-									primary_action(values) {
-										frappe.call({
-											method: "iassist.iassist.api.delete.delete_request_icentral",
-											args: {
-												doctype: frm.doc.doctype,
-												docname: frm.doc.name,
-											},
-											callback: function (r) {
-												if (r.message && r.message.status == "success") {
-													frappe.call({
-														method: "frappe.desk.form.utils.add_comment",
-														args: {
-															reference_doctype: frm.doc.doctype,
-															reference_name: frm.doc.name,
-															content: values.reason,
-															comment_email: frappe.session.user,
-															comment_by:
-																frappe.session.user_fullname,
-														},
-														callback: function (res) {
-															frappe.show_alert({
-																message: __(
-																	"Comment and deletion remark updated successfully on Icentral",
-																),
-																indicator: "green",
-															});
-															frm.reload_doc();
-															d.hide();
-														},
-													});
-												} else {
-													frappe.show_alert({
-														message: __(
-															"Failed to acknowledge delete request on icentral.",
-														),
-														indicator: "red",
-													});
-												}
-											},
-										});
+											frappe.msgprint(message);
+											frm.reload_doc();
+										} else {
+											frappe.msgprint(
+												"Failed to raise ticket on Icentral Support",
+											);
+										}
 									},
 								});
+							});
+						} else if (!frm.doc.custom_requested_to_delete_ticket) {
+							frm.add_custom_button("Update Ticket", function () {
+								frappe.call({
+									method: "iassist.iassist.api.api.sync_to_update",
+									args: {
+										docname: frm.doc.name,
+										doctype: frm.doc.doctype,
+									},
+									callback: function (res) {
+										if (!res.exc) {
+											let message =
+												typeof res.message === "string"
+													? res.message
+													: JSON.stringify(res.message);
 
-								d.show();
-							},
-							"Actions",
-						);
+											frappe.msgprint(message);
+											frm.reload_doc();
+										} else {
+											frappe.msgprint(
+												"Failed to update ticket on Icentral Support",
+											);
+										}
+									},
+								});
+							});
+
+							frm.add_custom_button(
+								"Request For Deletion",
+								function () {
+									let d = new frappe.ui.Dialog({
+										title: "Request for Deletion",
+										fields: [
+											{
+												fieldtype: "Small Text",
+												fieldname: "reason",
+												label: "Reason for Deletion",
+												reqd: 1,
+											},
+										],
+										primary_action_label: "Delete Request",
+										primary_action(values) {
+											frappe.call({
+												method: "iassist.iassist.api.delete.delete_request_icentral",
+												args: {
+													doctype: frm.doc.doctype,
+													docname: frm.doc.name,
+												},
+												callback: function (r) {
+													if (
+														r.message &&
+														r.message.status == "success"
+													) {
+														frappe.call({
+															method: "frappe.desk.form.utils.add_comment",
+															args: {
+																reference_doctype: frm.doc.doctype,
+																reference_name: frm.doc.name,
+																content: values.reason,
+																comment_email: frappe.session.user,
+																comment_by:
+																	frappe.session.user_fullname,
+															},
+															callback: function (res) {
+																frappe.show_alert({
+																	message: __(
+																		"Comment and deletion remark updated successfully on Icentral",
+																	),
+																	indicator: "green",
+																});
+																frm.reload_doc();
+																d.hide();
+															},
+														});
+													} else {
+														frappe.show_alert({
+															message: __(
+																"Failed to acknowledge delete request on icentral.",
+															),
+															indicator: "red",
+														});
+													}
+												},
+											});
+										},
+									});
+
+									d.show();
+								},
+								"Actions",
+							);
+						}
 					}
-				}
-			},
-		});
+				},
+			});
+		}
 	},
 	custom_sync_status(frm) {
 		render_status_box(frm);

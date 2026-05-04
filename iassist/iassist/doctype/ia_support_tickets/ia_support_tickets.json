@@ -86,34 +86,40 @@
    "fieldtype": "Data",
    "in_list_view": 1,
    "label": "Subject",
+   "no_copy": 1,
    "reqd": 1
   },
   {
    "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
-   "label": "Posting Date"
+   "label": "Posting Date",
+   "no_copy": 1
   },
   {
    "fieldname": "full_name",
    "fieldtype": "Data",
    "label": "Full Name",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "expected_start_date",
    "fieldtype": "Datetime",
-   "label": "Expected Start Date"
+   "label": "Expected Start Date",
+   "no_copy": 1
   },
   {
    "fieldname": "expected_end_date",
    "fieldtype": "Datetime",
-   "label": "Expected End Date"
+   "label": "Expected End Date",
+   "no_copy": 1
   },
   {
    "fieldname": "custom_referred_doctype",
    "fieldtype": "Data",
    "label": "Referred Doctype",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -123,6 +129,7 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Status",
+   "no_copy": 1,
    "options": "IA Support Ticket Status Type"
   },
   {
@@ -132,17 +139,20 @@
   {
    "fieldname": "actual_start_date",
    "fieldtype": "Datetime",
-   "label": "Actual Start Date"
+   "label": "Actual Start Date",
+   "no_copy": 1
   },
   {
    "fieldname": "actual_end_date",
    "fieldtype": "Data",
-   "label": "Actual End Date"
+   "label": "Actual End Date",
+   "no_copy": 1
   },
   {
    "fieldname": "custom_sync_status",
    "fieldtype": "Select",
    "label": "Sync Status",
+   "no_copy": 1,
    "options": "\nPending\nSynced\nFailed\nNot Synced",
    "read_only": 1
   },
@@ -150,6 +160,7 @@
    "fieldname": "subscription_status",
    "fieldtype": "Data",
    "label": "Subscription Status",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -158,18 +169,21 @@
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Central Ticket Id",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "custom_last_sync",
    "fieldtype": "Datetime",
    "label": "Last Sync",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "custom_url",
    "fieldtype": "Data",
    "label": "URL",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -207,6 +221,7 @@
    "fieldname": "raised_by",
    "fieldtype": "Data",
    "label": "User ID",
+   "no_copy": 1,
    "options": "Email",
    "read_only": 1
   },
@@ -218,19 +233,22 @@
   {
    "fieldname": "feedback",
    "fieldtype": "Data",
-   "label": "Feedback"
+   "label": "Feedback",
+   "no_copy": 1
   },
   {
    "fieldname": "feedback_extra",
    "fieldtype": "Long Text",
    "label": "Feedback(Extra)",
-   "mandatory_depends_on": "eval:doc.status == \"Closed\";"
+   "mandatory_depends_on": "eval:doc.status == \"Closed\";",
+   "no_copy": 1
   },
   {
    "fieldname": "feedback_rating",
    "fieldtype": "Rating",
    "label": "Rating",
-   "mandatory_depends_on": "eval:doc.status == \"Closed\";"
+   "mandatory_depends_on": "eval:doc.status == \"Closed\";",
+   "no_copy": 1
   },
   {
    "fieldname": "project",
@@ -247,12 +265,14 @@
    "fieldname": "custom_deleted_from_icentral_support",
    "fieldtype": "Check",
    "label": "Deleted from Icentral Support",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "custom_delete_remark",
    "fieldtype": "Long Text",
    "label": "Delete Remark",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -260,6 +280,7 @@
    "fieldname": "custom_requested_to_delete_ticket",
    "fieldtype": "Check",
    "label": " Requested to delete ticket",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -276,6 +297,7 @@
    "fieldname": "custom_functional_efforts",
    "fieldtype": "Float",
    "label": "Functional Efforts",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -283,6 +305,7 @@
    "fieldname": "custom_customisation_efforts",
    "fieldtype": "Float",
    "label": "Customisation Efforts",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -290,30 +313,35 @@
    "fieldname": "custom_efforts_consumed",
    "fieldtype": "Float",
    "label": "Efforts Consumed",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "custom_issuecr_closing_date",
    "fieldtype": "Date",
    "label": "Issue/CR Closing Date",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "custom_date_of_approval",
    "fieldtype": "Date",
    "label": "Date of Approval",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "custom_approval_reference",
    "fieldtype": "Data",
    "label": "Approval Reference",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "custom_cost_incurred",
    "fieldtype": "Currency",
    "label": "Cost Incurred",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -325,23 +353,27 @@
    "fieldname": "custom_status_wise_activity_table",
    "fieldtype": "Table",
    "label": "Status Wise Activity Table",
+   "no_copy": 1,
    "options": "Status Wise Activity Table",
    "read_only": 1
   },
   {
    "fieldname": "custom_payment_status",
    "fieldtype": "Data",
-   "label": "Payment Status"
+   "label": "Payment Status",
+   "no_copy": 1
   },
   {
    "fieldname": "resolution_tab",
    "fieldtype": "Tab Break",
-   "label": "Resolution"
+   "label": "Resolution",
+   "no_copy": 1
   },
   {
    "fieldname": "resolution_details",
    "fieldtype": "Text Editor",
-   "label": "Resolution Details"
+   "label": "Resolution Details",
+   "no_copy": 1
   },
   {
    "fieldname": "column_break_qktr",
@@ -351,24 +383,28 @@
    "fieldname": "opening_date",
    "fieldtype": "Date",
    "label": "Opening Date",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "opening_time",
    "fieldtype": "Time",
    "label": "Opening Time",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "resolution_date",
    "fieldtype": "Datetime",
    "label": "Resolution Date",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "resolution_time",
    "fieldtype": "Duration",
    "label": "Resolution Time",
+   "no_copy": 1,
    "read_only": 1
   },
   {
@@ -384,56 +420,63 @@
    "fieldname": "sla",
    "fieldtype": "Data",
    "label": "Service Level Agreement",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "agreement_status",
    "fieldtype": "Data",
    "label": "SLA Status",
+   "no_copy": 1,
    "read_only": 1
   },
   {
-   "depends_on": "",
    "fieldname": "response_by",
    "fieldtype": "Datetime",
    "label": "Response By",
+   "no_copy": 1,
    "read_only": 1
   },
   {
-   "depends_on": "",
    "fieldname": "resolution_by",
    "fieldtype": "Datetime",
    "label": "Resolution By",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "service_level_agreement_creation",
    "fieldtype": "Datetime",
    "label": "SLA Creation",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "on_hold_since",
    "fieldtype": "Datetime",
    "label": "On Hold Since",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "total_hold_time",
    "fieldtype": "Duration",
    "label": "Total Hold Time",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "ticket_type",
    "fieldtype": "Data",
    "label": "Ticket Type",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "ia_priority",
    "fieldtype": "Link",
    "label": "Priority",
+   "no_copy": 1,
    "options": "IA Priority"
   },
   {
@@ -444,13 +487,15 @@
    "fieldname": "custom_not_feasible",
    "fieldtype": "Data",
    "label": "Not Feasible",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "custom_ticket_hold_reason",
    "fieldtype": "Small Text",
    "hidden": 1,
-   "label": "Ticket Hold Reason"
+   "label": "Ticket Hold Reason",
+   "no_copy": 1
   },
   {
    "fieldname": "rca_section",
@@ -460,28 +505,33 @@
   {
    "fieldname": "custom_analysis",
    "fieldtype": "Small Text",
-   "label": "Analysis"
+   "label": "Analysis",
+   "no_copy": 1
   },
   {
    "fieldname": "custom_corrective_actions",
    "fieldtype": "Small Text",
-   "label": "Corrective Actions"
+   "label": "Corrective Actions",
+   "no_copy": 1
   },
   {
    "fieldname": "custom_preventive_actions",
    "fieldtype": "Small Text",
-   "label": "Preventive Actions"
+   "label": "Preventive Actions",
+   "no_copy": 1
   },
   {
    "fieldname": "custom_ticket_closure_reason",
    "fieldtype": "Small Text",
    "label": "Ticket Closure Reason",
+   "no_copy": 1,
    "read_only": 1
   },
   {
    "fieldname": "status_box",
    "fieldtype": "Small Text",
-   "label": "Status box"
+   "label": "Status box",
+   "no_copy": 1
   },
   {
    "fieldname": "section_break_sfwe",
@@ -496,7 +546,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-04-21 10:03:40.207258",
+ "modified": "2026-05-04 17:32:48.092978",
  "modified_by": "Administrator",
  "module": "IAssist",
  "name": "IA Support Tickets",

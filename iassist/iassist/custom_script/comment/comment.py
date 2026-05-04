@@ -30,7 +30,7 @@ def sync_comment_to_icentral(doc, method):
         elif doc.reference_doctype == "HD Ticket":
             reference_name = frappe.db.get_value(doc.reference_doctype, doc.reference_name, "custom_master_ticket_id")
         # else:
-        #     frappe.log_error(title="refrence name not found")
+            # frappe.log_error(title="refrence name not found")
         referred_doctype = frappe.db.get_value(doc.reference_doctype, doc.reference_name, "custom_referred_doctype")
         if not reference_name and referred_doctype:
             return
@@ -74,7 +74,7 @@ def update_comment_in_icentral(doc,method):
         payload = {"name":doc.custom_ic_comment_id, "content":doc.content}
 
         if not endpoint_path:
-            # frappe.log_error(title=f"No endpoint defined for Doctype: {doctype}")
+            frappe.log_error(title=f"No endpoint defined for Doctype: {doctype}")
             return
         response = requests.post(endpoint_path, json=payload, headers=headers)
         if response.status_code == 200:
@@ -84,8 +84,8 @@ def update_comment_in_icentral(doc,method):
             message = (response_data.get("message", {}).get("message") if response_data and isinstance(response_data, dict) else response.status_code)
             # frappe.log_error(title="Comment sync failed",message=message)
     except Exception as e:
-        return str(e)
         # frappe.log_error(title="Comment sync failed",message=str(e))
+        return str(e)
 
 @frappe.whitelist()
 def update_comment_in_iassist(data=None):
