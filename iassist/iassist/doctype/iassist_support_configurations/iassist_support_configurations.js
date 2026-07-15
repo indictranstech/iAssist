@@ -26,18 +26,7 @@ frappe.ui.form.on("IAssist Support Configurations", {
 	},
 	onload: function (frm) {
 		// Child table field filter
-		frm.fields_dict["ics_multi_user_details"].grid.get_field("username").get_query = function (
-			doc,
-			cdt,
-			cdn,
-		) {
-			return {
-				query: "frappe.core.doctype.user.user.user_query",
-				filters: {
-					role: "IAssist User",
-				},
-			};
-		};
+		user_query(frm);
 	},
 });
 

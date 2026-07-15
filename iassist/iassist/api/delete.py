@@ -16,14 +16,9 @@ def delete_request_icentral(doctype,docname):
 
 def sync_delete_remark(doc):
     try:
-        if doc.doctype == "Issue":
-            if not doc.custom_master_ic_id:
-                return
-        if doc.doctype == "ICS Support Tickets":   
+        
+        if doc.doctype == "IA Support Tickets":   
             if not doc.central_ticket_id:
-                return
-        if doc.doctype == "HD Ticket":
-            if not doc.custom_master_ticket_id:
                 return
         
         config = frappe.get_single("IAssist Support Configurations")
@@ -53,13 +48,9 @@ def sync_delete_remark(doc):
 
         }
         
-        if doc.doctype == "Issue":
-            payload['name'] = doc.custom_master_ic_id
-        elif doc.doctype == "IA Support Tickets":
+        if doc.doctype == "IA Support Tickets":
             payload['name'] = doc.central_ticket_id
-        elif doc.doctype == "HD Ticket":
-            payload['name'] = doc.custom_master_ticket_id
-       
+        
         response = requests.post(delete_update_url, json=payload, headers=headers)
         response_data = response.json()
         print(response,'response',response.text)
@@ -86,88 +77,6 @@ def sync_delete_remark(doc):
         message = (response_data.get("message", {}).get("message") if response_data and isinstance(response_data, dict) else response.status_code)
         return str(message)
 
-
-@frappe.whitelist()
-def delete_issue(data=None):
-    if frappe.request.method != "DELETE":
-        frappe.response["http_status_code"] = 405
-        return {
-            "status_code": 405,
-            "message": "Method Not Allowed. Please use POST.",
-            "data": {}
-        }
-
-    user = frappe.session.user
-
-    if not frappe.has_permission("Issue", "delete", user=user):
-        return{"message":"You do not have permission to update this document."}
-
-    try:
-        if not data:
-            data = frappe.request.data
-            data = json.loads(data)
-    except Exception as e:
-        return {
-            "status_code": 400,
-            "message": f"Invalid request data: {str(e)}",
-            "data": {}
-        }
-    if data.get("name"):
-        if frappe.db.exists("Issue",{'name':data.get("name")}):
-            doc= frappe.get_doc("Issue",data.get("name"))
-            doc.delete()
-            return {
-                "status_code": 200,
-                "message": f"Issue {data.get('name')} deleted successfully.",
-                "data": {}
-            }
-        else:
-            return {
-                "status_code": 404,
-                "message": f"Issue {data.get('name')} doc does not exist",
-                "data": {}
-            }
-
-@frappe.whitelist()
-def delete_hdticket(data=None):
-    if frappe.request.method != "DELETE":
-        frappe.response["http_status_code"] = 405
-        return {
-            "status_code": 405,
-            "message": "Method Not Allowed. Please use POST.",
-            "data": {}
-        }
-
-    user = frappe.session.user
-
-    if not frappe.has_permission("HD Ticket", "delete", user=user):
-        return{"message":"You do not have permission to update this document."}
-
-    try:
-        if not data:
-            data = frappe.request.data
-            data = json.loads(data)
-    except Exception as e:
-        return {
-            "status_code": 400,
-            "message": f"Invalid request data: {str(e)}",
-            "data": {}
-        }
-    if data.get("name"):
-        if frappe.db.exists("HD Ticket",{'name':data.get("name")}):
-            doc= frappe.get_doc("HD Ticket",data.get("name"))
-            doc.delete()
-            return {
-                "status_code": 200,
-                "message": f"HD Ticket {data.get('name')} deleted successfully.",
-                "data": {}
-            }
-        else:
-            return {
-                "status_code": 404,
-                "message": f"HD Ticket {data.get('name')} doc does not exist",
-                "data": {}
-            }
 
 @frappe.whitelist()
 def update_delete_remark(data=None):
@@ -211,12 +120,10 @@ def update_delete_remark(data=None):
                 setattr(doc, key, value)
                     
         doc.save()
-        if refer_doctype == "Issue":
-            frappe.db.set_value("Issue",{'name':docname},"custom_master_ic_id",None)
-        elif refer_doctype == "IA Support Tickets":
+       
+        if refer_doctype == "IA Support Tickets":
             frappe.db.set_value("IA Support Tickets",{'name':docname},"central_ticket_id",None)
-        elif refer_doctype == "HD Ticket":
-            frappe.db.set_value("HD Ticket",{'name':docname},"custom_master_ticket_id",None)
+        
         return {
             "status_code": 200,
             "message": f"{refer_doctype} {docname} updated successfully.",

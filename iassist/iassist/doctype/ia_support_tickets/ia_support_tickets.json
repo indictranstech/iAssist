@@ -15,9 +15,11 @@
   "custom_url",
   "central_ticket_id",
   "custom_referred_doctype",
+  "custom_deployed_on",
   "column_break_gesv",
   "ia_priority",
   "ticket_type",
+  "custom_ticket_sub_type",
   "custom_site_name",
   "raised_by",
   "full_name",
@@ -532,13 +534,25 @@
    "fieldtype": "Data",
    "label": "Site Name",
    "reqd": 1
+  },
+  {
+   "fieldname": "custom_ticket_sub_type",
+   "fieldtype": "Data",
+   "label": "Ticket Sub Type",
+   "read_only": 1
+  },
+  {
+   "fieldname": "custom_deployed_on",
+   "fieldtype": "Select",
+   "label": "Deployed On",
+   "options": "\nUAT\nLive\nLocal"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-06-17 19:32:51.292370",
- "modified_by": "Administrator",
+ "modified": "2026-07-13 18:33:17.724438",
+ "modified_by": "anjali.s@indictranstech.com",
  "module": "IAssist",
  "name": "IA Support Tickets",
  "naming_rule": "Expression",

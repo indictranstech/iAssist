@@ -12,7 +12,7 @@ def sync_comment_to_icentral(doc, method):
     try:
         if doc.custom_comment_from_icentral:  
             return
-        if doc.reference_doctype not in ("Issue", "IA Support Tickets", "HD Ticket"):
+        if doc.reference_doctype not in ("IA Support Tickets"):
             return
 
         config = frappe.get_single("IAssist Support Configurations")
@@ -27,10 +27,6 @@ def sync_comment_to_icentral(doc, method):
         reference_name = None
         if doc.reference_doctype == "IA Support Tickets":
             reference_name = frappe.db.get_value(doc.reference_doctype, doc.reference_name, "central_ticket_id")
-        elif doc.reference_doctype == "Issue":
-            reference_name = frappe.db.get_value(doc.reference_doctype, doc.reference_name, "custom_master_ic_id")
-        elif doc.reference_doctype == "HD Ticket":
-            reference_name = frappe.db.get_value(doc.reference_doctype, doc.reference_name, "custom_master_ticket_id")
         # else:
             # frappe.log_error(title="refrence name not found")
         referred_doctype = frappe.db.get_value(doc.reference_doctype, doc.reference_name, "custom_referred_doctype")
@@ -61,7 +57,7 @@ def update_comment_in_icentral(doc,method):
     try:
         if not doc or doc.is_new():
             return
-        if not (doc.reference_doctype == "Issue" or doc.reference_doctype == "IA Support Tickets" or doc.reference_doctype == "HD Ticket"):
+        if not (doc.reference_doctype == "IA Support Tickets"):
             return
         config = frappe.get_single("IAssist Support Configurations")
         headers = get_configurations(doc)
