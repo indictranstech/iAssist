@@ -66,6 +66,9 @@ def update_ticket(data=None):
         for key, value in valid_fields.items():
             if key != 'name':
                 df = doc.meta.get_field(key)
+                if not df:
+                    # Field doesn't exist on this doctype at all — ignore it
+                    continue
                 if df and df.fieldtype == "Link" and value:
                     if frappe.db.exists(df.options, value):
                         setattr(doc, key, value)
