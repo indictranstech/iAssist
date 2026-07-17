@@ -314,7 +314,7 @@ def sync_to_central_support_to_update(doc):
         payload["custom_last_sync"] = frappe.utils.now()
         payload["custom_site_name"] = doc.custom_site_name
         payload['custom_deployed_on'] = doc.custom_deployed_on
-        payload["custom_ticket_sub_type"] = doc.ticket_sub_type
+        payload["custom_ticket_sub_type"] = doc.custom_ticket_sub_type
         payload["priority"] = doc.ia_priority if doctype == "IA Support Tickets" else doc.priority
         payload["custom_not_feasible"] = doc.custom_not_feasible if doc.custom_not_feasible else ""
         payload["custom_ticket_hold_reason"] = doc.custom_ticket_hold_reason if doc.custom_ticket_hold_reason else ""
