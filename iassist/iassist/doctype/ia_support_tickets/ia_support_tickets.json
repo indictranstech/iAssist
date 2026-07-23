@@ -538,7 +538,7 @@
   {
    "fieldname": "custom_ticket_sub_type",
    "fieldtype": "Data",
-   "label": "Ticket Sub Type",
+   "label": "Issue Type",
    "read_only": 1
   },
   {
@@ -551,8 +551,8 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2026-07-13 18:33:17.724438",
- "modified_by": "anjali.s@indictranstech.com",
+ "modified": "2026-07-20 18:10:35.502356",
+ "modified_by": "Administrator",
  "module": "IAssist",
  "name": "IA Support Tickets",
  "naming_rule": "Expression",
