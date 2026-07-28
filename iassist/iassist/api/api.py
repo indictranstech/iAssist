@@ -458,7 +458,7 @@ def get_attachments_for_payload(doc):
             "attached_to_doctype": doc.doctype,
             "attached_to_name": doc.name
         },
-        fields=["file_name", "file_url", "file_type"]
+        fields=["file_name", "file_url", "file_type","content_hash"]
     )
 
     html_fields = {
@@ -490,6 +490,7 @@ def get_attachments_for_payload(doc):
                 "file_name": file_info.file_name,
                 "file_type": file_info.file_type,
                 "file_base64": encoded_content,
+                "content_hash": file_info.content_hash,
                 "related_to": related_to 
             })
 
@@ -512,7 +513,8 @@ def save_attachments_for_doc(doc, attachments):
         if not file_name or not file_base64:
             # frappe.log_error(f"Invalid attachment payload: {file}")
             continue
-
+        if frappe.db.exists("File",{'content_hash': file.get("content_hash")},'name'):
+            continue
         try:
             file_doc = save_file(
                 fname=file_name,
