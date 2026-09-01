@@ -26,6 +26,7 @@ frappe.ui.form.on("IA Support Tickets", {
 										docname: frm.doc.name,
 										doctype: frm.doc.doctype,
 									},
+									freeze: true,
 									callback: function (res) {
 										if (!res.exc) {
 											let message =
@@ -41,7 +42,7 @@ frappe.ui.form.on("IA Support Tickets", {
 											);
 										}
 									},
-								});
+								}, 5000);
 							});
 							$(raiseBtn).removeClass("btn-default").css({
 								"background-color": "#1E88E5",
