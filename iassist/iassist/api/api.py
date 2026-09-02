@@ -491,7 +491,8 @@ def get_attachments_for_payload(doc):
                 "file_type": file_info.file_type,
                 "file_base64": encoded_content,
                 "content_hash": file_info.content_hash,
-                "related_to": related_to 
+                "related_to": related_to,
+                "source_file_url": file_info.file_url
             })
 
         except Exception as e:
@@ -509,40 +510,63 @@ def save_attachments_for_doc(doc, attachments):
         file_name = file.get("file_name")
         file_base64 = file.get("file_base64")
         related_to = file.get("related_to") or "attachment"
+        content_hash = file.get("content_hash")
+        source_file_url = file.get("source_file_url")
 
         if not file_name or not file_base64:
-            # frappe.log_error(f"Invalid attachment payload: {file}")
             continue
-        if frappe.db.exists("File",{'content_hash': file.get("content_hash")},'name'):
-            continue
-        try:
-            file_doc = save_file(
-                fname=file_name,
-                content=file_base64,
-                dt=doc.doctype,
-                dn=doc.name,
-                decode=True
+
+        existing_file = None
+        if content_hash:
+            existing_file = frappe.db.get_value(
+                "File",
+                {
+                    "content_hash": content_hash,
+                    "attached_to_doctype": doc.doctype,
+                    "attached_to_name": doc.name,
+                },
+                ["name", "file_url"],
+                as_dict=True,
             )
 
-            saved_files.append(file_doc.file_url)
+        if existing_file:
+            file_url = existing_file.file_url
+        else:
+            try:
+                file_doc = save_file(
+                    fname=file_name,
+                    content=file_base64,
+                    dt=doc.doctype,
+                    dn=doc.name,
+                    decode=True
+                )
+                file_url = file_doc.file_url
+                saved_files.append(file_url)
+            except Exception as e:
+                frappe.logger().error(f"Failed to save attachment {file_name}: {e}")
+                continue
 
-            if related_to in ["description", "resolution_details","summary"]:
-                html_value = getattr(doc, related_to, "") or ""
+        if related_to in ["description", "resolution_details", "summary"]:
+            html_value = getattr(doc, related_to, "") or ""
+            new_html_value = html_value
+            replaced = False
 
-                html_value = re.sub(
-                    r'src="[^"]+"',
-                    f'src="{file_doc.file_url}"',
-                    html_value,
-                    count=1 
+            if source_file_url:
+                pattern = re.compile(
+                    r'src="[^"]*' + re.escape(source_file_url) + r'[^"]*"'
+                )
+                new_html_value, n = pattern.subn(
+                    f'src="{file_url}"', new_html_value, count=1
+                )
+                replaced = n > 0
+
+            if not replaced:
+                new_html_value = re.sub(
+                    r'src="[^"]+"', f'src="{file_url}"', new_html_value, count=1
                 )
 
-                # setattr(doc, related_to, html_value)
-                doc.db_set(related_to,html_value)
-        except Exception as e:  
-            # frappe.log_error(title=f"Failed to save attachment {file_name}",message=str(e))
-            return str(e)
-    # if saved_files:
-    #     doc.save(ignore_permissions=True) 
+            if new_html_value != html_value:
+                doc.db_set(related_to, new_html_value)
 
     return saved_files
 
